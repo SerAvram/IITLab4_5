@@ -1,0 +1,29 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Docker image
+      run: docker build -t seravr/lab4_5 .
+    - name: Log into Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Push Docker image
+      run: docker push your_dockerhub_username/your_image_name
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
+        script: |
+          docker pull your_dockerhub_username/your_image_name
+          docker stop my-web-app  true  # Зупинити старий контейнер, якщо він існує
+          docker rm my-web-app  true    # Видалити старий контейнер, якщо він існує
+          docker run -d -p 80:80 --name my-web-app your_dockerhub_username/your_image_name
