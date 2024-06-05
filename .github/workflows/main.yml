@@ -31,7 +31,7 @@ jobs:
     - name: SSH into VM and deploy
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.VM_HOST }}
+        host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.VM_USER }}
         key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
         script: |
