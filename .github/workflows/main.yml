@@ -33,7 +33,6 @@ jobs:
       with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}  # Ниже будет картинка, где показана настройка secrets
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{ env.AWS_REGION_NAME }}
 
 
     - name: SSH into VM and deploy
