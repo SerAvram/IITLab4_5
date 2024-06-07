@@ -34,15 +34,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}  # Ниже будет картинка, где показана настройка secrets
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-region: ${{ secrets.AWS_REGION_NAME }}
-
-    - name: SSH into VM and deploy
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.AWS_SSH_PRIVATE_KEY }}
-        script: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/lab4_5:latest
-          docker stop lab4_5_container  true
-          docker rm lab4_5_container  true
-          docker run -d -p 8041:80 --name lab4_5_container ${{ secrets.DOCKERHUB_USERNAME }}/lab4_5:latest
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/lab4_5:latest
+            docker stop lab4_5_container  true
+            docker rm lab4_5_container  true
+            docker run -d -p 8041:80 --name lab4_5_container ${{ secrets.DOCKERHUB_USERNAME }}/lab4_5:latest
